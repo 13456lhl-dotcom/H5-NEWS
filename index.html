@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- 增加 viewport-fit=cover 适配全面屏刘海和底部小黑条 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>赫哲族伊玛堪：从“急需保护”到“人类非遗代表作”</title>
     
     <!-- 引入 Tailwind CSS 进行快速布局 -->
@@ -30,10 +31,13 @@
             overflow-y: scroll;
             scroll-snap-type: y mandatory; /* 强制纵向吸附 */
             scroll-behavior: smooth;
+            /* 增加 iOS 滚动惯性支持 */
+            -webkit-overflow-scrolling: touch;
         }
 
         .page {
-            height: 100vh; /* 每一页占满屏幕高度 */
+            /* [修改点 1] 改为 100% 而非 100vh，避免手机浏览器底部工具栏遮挡内容 */
+            height: 100%; 
             width: 100%;
             scroll-snap-align: start; /* 滚动停止时吸附到顶部 */
             position: relative;
@@ -41,6 +45,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            /* 适配 iPhone 底部安全区 */
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         /* --- 视觉装饰 --- */
@@ -75,7 +81,7 @@
         /* --- 下滑提示箭头 --- */
         .scroll-indicator {
             position: absolute;
-            bottom: 20px;
+            bottom: 30px; /* 稍微调高，避免贴底 */
             left: 50%;
             transform: translateX(-50%);
             animation: bounce 2s infinite;
@@ -143,7 +149,7 @@
                 </h3>
                 <div class="space-y-4 text-gray-700 leading-relaxed text-justify animate__animated animate__fadeInUp delay-100">
                     <p>
-                        <span class="font-bold text-blue-800">【本台讯】</span>
+                        <span class="font-bold text-blue-800">【翰林讯】</span>
                         近日，联合国教科文组织正式决议，将中国的“赫哲族伊玛堪”从《急需保护的非物质文化遗产名录》转入《人类非物质文化遗产代表作名录》。
                     </p>
                     <p>
@@ -159,26 +165,39 @@
         <!-- 3️⃣ 赫哲族与伊玛堪介绍页 -->
         <section class="page bg-paper px-6">
             <div class="w-full">
-                <!-- 图片占位 -->
-                <div class="w-full h-48 bg-gray-300 rounded-lg mb-6 flex items-center justify-center overflow-hidden animate__animated animate__fadeIn">
-                    <span class="text-gray-500 text-sm"><i class="fas fa-image mr-2"></i>[示意图：三江平原赫哲族渔猎场景]</span>
-                </div>
+                <!-- 示意图：三江平原赫哲族渔猎场景 -->
+                <!-- [修改点] 修复了 < img 之间的空格，添加了 referrerpolicy 属性以支持外部链接图片 -->
+                <img 
+                    src="https://bkimg.cdn.bcebos.com/pic/8326cffc1e178a82b901a67b0b4b648da9773812429c" 
+                    alt="三江平原赫哲族传统渔猎生活场景" 
+                    class="w-full h-48 object-cover rounded-lg mb-2 shadow-md animate__animated animate__fadeIn"
+                    referrerpolicy="no-referrer"
+                >
+
+                <p class="text-xs text-gray-500 text-center mb-6">
+                    图示：三江平原地区赫哲族传统渔猎生活场景（图片来源：百科图片，示意）
+                </p>
 
                 <h3 class="text-xl font-bold text-gray-800 mb-4 animate__animated animate__fadeInLeft">
                     江河上的守望者
                 </h3>
                 
                 <div class="bg-white p-5 shadow-md rounded-lg mb-4 animate__animated animate__fadeInUp delay-100">
-                    <h4 class="font-bold text-blue-900 mb-2 text-sm"><i class="fas fa-map-marker-alt mr-2"></i>地理分布</h4>
+                    <h4 class="font-bold text-blue-900 mb-2 text-sm">
+                        <i class="fas fa-map-marker-alt mr-2"></i>地理分布
+                    </h4>
                     <p class="text-sm text-gray-600">
                         赫哲族是中国人口较少的少数民族之一，世居于黑龙江、松花江、乌苏里江流域，通过渔猎与自然共生。
                     </p>
                 </div>
 
                 <div class="bg-white p-5 shadow-md rounded-lg animate__animated animate__fadeInUp delay-200">
-                    <h4 class="font-bold text-blue-900 mb-2 text-sm"><i class="fas fa-music mr-2"></i>何为“伊玛堪”？</h4>
+                    <h4 class="font-bold text-blue-900 mb-2 text-sm">
+                        <i class="fas fa-music mr-2"></i>何为“伊玛堪”？
+                    </h4>
                     <p class="text-sm text-gray-600">
-                        赫哲族特有的口头叙事艺术。它没有乐器伴奏，仅凭艺人（“伊玛堪奇”）的说唱，讲述英雄史诗、渔猎生活与民族起源。
+                        赫哲族特有的口头叙事艺术。它没有乐器伴奏，仅凭艺人（“伊玛堪奇”）的说唱，
+                        讲述英雄史诗、渔猎生活与民族起源。
                     </p>
                 </div>
             </div>
@@ -356,19 +375,21 @@
         <section class="page bg-black text-gray-400 px-6 text-center">
             <div class="animate__animated animate__fadeIn">
                 <div class="mb-8">
-                    <h4 class="text-white text-lg font-bold mb-2">新闻与新媒体课程作业</h4>
-                    <p class="text-xs tracking-widest uppercase">News & New Media Coursework</p>
+                    <h4 class="text-white text-lg font-bold mb-2">融合新闻课程作业</h4>
+                    <!-- [修改点 2] 修正了拼写，增加了空格 -->
+                    <p class="text-xs tracking-widest uppercase">News & Convergent Journalism</p>
                 </div>
 
                 <div class="space-y-2 text-sm mb-12">
                     <p>策划 / 编辑 / 制作</p>
-                    <p class="text-white font-bold text-lg">[ 您的姓名 ]</p>
-                    <p class="text-xs">前端工程师 & 非遗文化编辑</p>
+                    <p class="text-white font-bold text-lg">[ 梁翰林 ]</p>
+                    <p class="text-xs">24网络与新媒体 & 1班</p>
                 </div>
 
                 <div class="text-xs text-gray-600">
                     <p>素材来源：联合国教科文组织官网、中国非物质文化遗产网</p>
-                    <p class="mt-2">Copyright © 2023 University Course Project</p>
+                    <!-- [修改点 3] 更新了年份 -->
+                    <p class="mt-2">Copyright © 2025 University Course Project</p>
                 </div>
                 
                 <!-- 重新观看按钮 -->
@@ -383,23 +404,18 @@
     <!-- JavaScript 逻辑 -->
     <script>
         // 1. 监听滚动，触发动画
-        // 使用 IntersectionObserver API 高效检测页面可见性
         document.addEventListener("DOMContentLoaded", function() {
             const pages = document.querySelectorAll('.page');
             
             const observerOptions = {
                 root: document.getElementById('h5-container'),
-                threshold: 0.5 // 当页面显示 50% 时触发
+                threshold: 0.5 
             };
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // 添加 active 类，配合 CSS 触发 animate.css 动画
                         entry.target.classList.add('active');
-                    } else {
-                        // 可选：移出时移除类，实现重复播放效果
-                        // entry.target.classList.remove('active');
                     }
                 });
             }, observerOptions);
@@ -431,18 +447,25 @@
             const title = document.getElementById('feedback-title');
             const text = document.getElementById('feedback-text');
 
-            // 隐藏选项，显示反馈
             area.style.display = 'none';
             feedback.classList.remove('hidden');
             
-            // 填充内容
             title.textContent = interactionData[type].title;
             text.textContent = interactionData[type].text;
         }
 
+        // [修改点 4] 优化了重置逻辑，重新触发动画
         function resetInteraction() {
-            document.getElementById('interaction-area').style.display = 'block';
-            document.getElementById('feedback-area').classList.add('hidden');
+            const area = document.getElementById('interaction-area');
+            const feedback = document.getElementById('feedback-area');
+
+            area.style.display = 'block';
+            feedback.classList.add('hidden');
+
+            // 移除再添加类名，强行重绘以重新触发动画
+            area.classList.remove('animate__fadeInUp');
+            void area.offsetWidth; // 触发重绘
+            area.classList.add('animate__fadeInUp');
         }
 
         // 3. 辅助功能：回到顶部
