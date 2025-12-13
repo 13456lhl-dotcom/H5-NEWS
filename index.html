@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>赫哲族伊玛堪：从“急需保护”到“人类非遗代表作”</title>
+    
+    <!-- 引入 Tailwind CSS 进行快速布局 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Animate.css 用于动画效果 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- 引入 FontAwesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
+    <style>
+        /* --- 基础样式与字体 --- */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* 禁止普通滚动 */
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* --- 核心交互：纵向整屏滚动 (Scroll Snap) --- */
+        #h5-container {
+            height: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory; /* 强制纵向吸附 */
+            scroll-behavior: smooth;
+        }
+
+        .page {
+            height: 100vh; /* 每一页占满屏幕高度 */
+            width: 100%;
+            scroll-snap-align: start; /* 滚动停止时吸附到顶部 */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* --- 视觉装饰 --- */
+        /* 背景纹理：象征江水与流动 */
+        .bg-water-pattern {
+            background-color: #1a365d;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232c5282' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        /* 赫哲族桦树皮纹理感背景 */
+        .bg-paper {
+            background-color: #fdfbf7;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* 强调文字样式 */
+        .news-header {
+            border-left: 4px solid #c05621; /* 橙色强调线 */
+            padding-left: 12px;
+        }
+
+        /* --- 动画控制 --- */
+        /* 只有当页面处于激活状态时，才播放动画 */
+        .page .animate__animated {
+            opacity: 0; /* 初始隐藏 */
+        }
+        .page.active .animate__animated {
+            opacity: 1; /* 激活后显示 */
+        }
+
+        /* --- 下滑提示箭头 --- */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        .scroll-indicator.light {
+            color: rgba(255,255,255,0.6);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+            40% {transform: translateX(-50%) translateY(-10px);}
+            60% {transform: translateX(-50%) translateY(-5px);}
+        }
+
+        /* --- 互动页样式 --- */
+        .option-btn {
+            transition: all 0.3s ease;
+        }
+        .option-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* 隐藏滚动条但保留功能 */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 主容器 -->
+    <div id="h5-container">
+
+        <!-- 1️⃣ 封面页 -->
+        <section class="page bg-water-pattern text-white relative">
+            <div class="absolute inset-0 bg-black bg-opacity-30"></div> <!-- 遮罩 -->
+            <div class="relative z-10 px-8 text-center">
+                <div class="mb-4 inline-block px-3 py-1 border border-white rounded-full text-xs tracking-widest animate__animated animate__fadeInDown">
+                    非遗快讯 · 特别报道
+                </div>
+                <h1 class="text-4xl font-bold leading-tight mb-4 animate__animated animate__zoomIn delay-100">
+                    赫哲族<br>伊玛堪
+                </h1>
+                <h2 class="text-xl font-light opacity-90 mb-8 animate__animated animate__fadeInUp delay-200">
+                    转入《人类非物质文化遗产<br>代表作名录》
+                </h2>
+                <p class="text-sm opacity-70 animate__animated animate__fadeIn delay-300">
+                    见证非遗保护从“抢救”走向“传承”
+                </p>
+            </div>
+            <!-- 下滑提示 -->
+            <div class="scroll-indicator light">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- 2️⃣ 新闻导语页 -->
+        <section class="page bg-white px-6">
+            <div class="max-w-md mx-auto w-full">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 news-header animate__animated animate__fadeInRight">
+                    新闻速览
+                </h3>
+                <div class="space-y-4 text-gray-700 leading-relaxed text-justify animate__animated animate__fadeInUp delay-100">
+                    <p>
+                        <span class="font-bold text-blue-800">【本台讯】</span>
+                        近日，联合国教科文组织正式决议，将中国的“赫哲族伊玛堪”从《急需保护的非物质文化遗产名录》转入《人类非物质文化遗产代表作名录》。
+                    </p>
+                    <p>
+                        这一里程碑式的转变，标志着该项目的保护成效获得了国际社会的高度认可，也象征着中国在濒危非遗项目的抢救性保护工作中取得了突破性进展，实现了从“濒危抢救”向“系统性传承”的历史性跨越。
+                    </p>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- 3️⃣ 赫哲族与伊玛堪介绍页 -->
+        <section class="page bg-paper px-6">
+            <div class="w-full">
+                <!-- 图片占位 -->
+                <div class="w-full h-48 bg-gray-300 rounded-lg mb-6 flex items-center justify-center overflow-hidden animate__animated animate__fadeIn">
+                    <span class="text-gray-500 text-sm"><i class="fas fa-image mr-2"></i>[示意图：三江平原赫哲族渔猎场景]</span>
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-800 mb-4 animate__animated animate__fadeInLeft">
+                    江河上的守望者
+                </h3>
+                
+                <div class="bg-white p-5 shadow-md rounded-lg mb-4 animate__animated animate__fadeInUp delay-100">
+                    <h4 class="font-bold text-blue-900 mb-2 text-sm"><i class="fas fa-map-marker-alt mr-2"></i>地理分布</h4>
+                    <p class="text-sm text-gray-600">
+                        赫哲族是中国人口较少的少数民族之一，世居于黑龙江、松花江、乌苏里江流域，通过渔猎与自然共生。
+                    </p>
+                </div>
+
+                <div class="bg-white p-5 shadow-md rounded-lg animate__animated animate__fadeInUp delay-200">
+                    <h4 class="font-bold text-blue-900 mb-2 text-sm"><i class="fas fa-music mr-2"></i>何为“伊玛堪”？</h4>
+                    <p class="text-sm text-gray-600">
+                        赫哲族特有的口头叙事艺术。它没有乐器伴奏，仅凭艺人（“伊玛堪奇”）的说唱，讲述英雄史诗、渔猎生活与民族起源。
+                    </p>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- 4️⃣ 艺术与文化价值页 -->
+        <section class="page bg-gray-900 text-gray-100 px-6">
+            <div class="absolute top-0 right-0 p-10 opacity-10">
+                <i class="fas fa-microphone-alt text-9xl"></i>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-8 border-b border-gray-700 pb-4 animate__animated animate__fadeInLeft">
+                口耳相传的史诗
+            </h3>
+
+            <ul class="space-y-6 animate__animated animate__fadeInUp delay-100">
+                <li class="flex items-start">
+                    <div class="bg-yellow-600 p-2 rounded text-white mr-4 shrink-0">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-yellow-500">有声的历史书</h4>
+                        <p class="text-sm text-gray-400 mt-1">记录了赫哲族的历史变迁、民俗风情与宗教信仰，是该民族的精神系谱。</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <div class="bg-yellow-600 p-2 rounded text-white mr-4 shrink-0">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-yellow-500">语言的活化石</h4>
+                        <p class="text-sm text-gray-400 mt-1">在赫哲语濒临失传的背景下，伊玛堪保留了大量古语词汇，是语言传承的关键载体。</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <div class="bg-yellow-600 p-2 rounded text-white mr-4 shrink-0">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-yellow-500">独特的艺术形式</h4>
+                        <p class="text-sm text-gray-400 mt-1">融合了诗歌、音乐与叙事，大篇幅的韵文与散文交织，极具审美价值。</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="scroll-indicator light">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- 5️⃣ 保护历程页（时间线） -->
+        <section class="page bg-paper px-6">
+            <h3 class="text-center text-xl font-bold mb-10 text-gray-800 animate__animated animate__fadeInDown">
+                非遗保护的“进阶之路”
+            </h3>
+
+            <div class="relative border-l-4 border-gray-300 ml-4 py-2 space-y-12">
+                <!-- 节点 1 -->
+                <div class="relative pl-8 animate__animated animate__fadeInRight delay-100">
+                    <div class="absolute -left-3 top-0 bg-gray-500 h-6 w-6 rounded-full border-4 border-white"></div>
+                    <div class="text-sm text-gray-500 font-bold">2006年</div>
+                    <h4 class="text-lg font-bold text-gray-800">国家级非遗</h4>
+                    <p class="text-sm text-gray-600 mt-1">被列入第一批国家级非物质文化遗产名录，保护工作正式启动。</p>
+                </div>
+
+                <!-- 节点 2 -->
+                <div class="relative pl-8 animate__animated animate__fadeInRight delay-200">
+                    <div class="absolute -left-3 top-0 bg-red-500 h-6 w-6 rounded-full border-4 border-white"></div>
+                    <div class="text-sm text-red-500 font-bold">2011年</div>
+                    <h4 class="text-lg font-bold text-red-800">急需保护名录</h4>
+                    <p class="text-sm text-gray-600 mt-1">因传承人年事已高、语言环境缺失，被列入联合国教科文组织《急需保护的非物质文化遗产名录》。</p>
+                </div>
+
+                <!-- 节点 3 -->
+                <div class="relative pl-8 animate__animated animate__fadeInRight delay-300">
+                    <div class="absolute -left-3 top-0 bg-green-500 h-6 w-6 rounded-full border-4 border-white"></div>
+                    <div class="text-sm text-green-600 font-bold">现今</div>
+                    <h4 class="text-lg font-bold text-green-800">转入代表作名录</h4>
+                    <p class="text-sm text-gray-600 mt-1">经过多年抢救性记录与传习所建设，保护状况显著改善，成功转入《人类非物质文化遗产代表作名录》。</p>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- 6️⃣ 转入代表作名录的意义页 -->
+        <section class="page bg-blue-50 px-8 text-center">
+            <div class="w-16 h-1 bg-blue-800 mx-auto mb-6"></div>
+            <h3 class="text-2xl font-bold text-blue-900 mb-8 animate__animated animate__fadeInUp">
+                这一转变意味着什么？
+            </h3>
+
+            <div class="grid gap-6">
+                <div class="bg-white p-4 rounded-lg shadow-sm animate__animated animate__zoomIn delay-100">
+                    <h4 class="font-bold text-gray-800 mb-2">对赫哲族</h4>
+                    <p class="text-xs text-gray-500">极大地提振了民族文化自信，激励更多年轻一代加入传承行列。</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg shadow-sm animate__animated animate__zoomIn delay-200">
+                    <h4 class="font-bold text-gray-800 mb-2">对中国非遗</h4>
+                    <p class="text-xs text-gray-500">提供了濒危非遗抢救性保护的“中国方案”与成功范本。</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg shadow-sm animate__animated animate__zoomIn delay-300">
+                    <h4 class="font-bold text-gray-800 mb-2">对世界文化</h4>
+                    <p class="text-xs text-gray-500">丰富了人类文化的多样性，证明了即便是人口较少民族的文化也能在现代社会重焕生机。</p>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- 7️⃣ 互动参与页 -->
+        <section class="page bg-gray-800 text-white px-6">
+            <div class="w-full max-w-md mx-auto">
+                <h3 class="text-xl font-bold mb-2 animate__animated animate__fadeInDown">
+                    <i class="far fa-comments mr-2"></i>互动话题
+                </h3>
+                <p class="text-sm text-gray-400 mb-8 animate__animated animate__fadeIn delay-100">
+                    如果你是伊玛堪的传承人，你会优先选择哪种方式让更多年轻人了解这项非遗？
+                </p>
+
+                <!-- 互动选项容器 -->
+                <div id="interaction-area" class="space-y-4 animate__animated animate__fadeInUp delay-200">
+                    <button onclick="handleInteraction('digital')" class="option-btn w-full bg-gray-700 hover:bg-gray-600 text-left px-5 py-4 rounded-lg flex justify-between items-center group">
+                        <span>📱 制作短视频与数字化档案</span>
+                        <i class="fas fa-chevron-right opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </button>
+                    
+                    <button onclick="handleInteraction('school')" class="option-btn w-full bg-gray-700 hover:bg-gray-600 text-left px-5 py-4 rounded-lg flex justify-between items-center group">
+                        <span>🏫 开设校园非遗课程</span>
+                        <i class="fas fa-chevron-right opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </button>
+                    
+                    <button onclick="handleInteraction('tourism')" class="option-btn w-full bg-gray-700 hover:bg-gray-600 text-left px-5 py-4 rounded-lg flex justify-between items-center group">
+                        <span>🏞️ 结合民俗旅游进行展演</span>
+                        <i class="fas fa-chevron-right opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </button>
+                </div>
+
+                <!-- 反馈显示区域（初始隐藏） -->
+                <div id="feedback-area" class="hidden mt-6 bg-blue-900 p-4 rounded-lg border border-blue-700 animate__animated animate__fadeIn">
+                    <h4 class="font-bold text-blue-300 mb-2" id="feedback-title"></h4>
+                    <p class="text-sm text-gray-200" id="feedback-text"></p>
+                    <button onclick="resetInteraction()" class="mt-4 text-xs text-blue-300 underline">重新选择</button>
+                </div>
+            </div>
+            <div class="scroll-indicator light">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- 8️⃣ 结尾总结页 -->
+        <section class="page bg-white px-8 flex items-center justify-center text-center">
+            <div class="max-w-md">
+                <div class="text-6xl text-gray-200 mb-4 animate__animated animate__fadeIn">“</div>
+                <h3 class="text-xl font-bold text-gray-800 leading-relaxed mb-6 animate__animated animate__fadeInUp">
+                    非遗保护不是将文化封存进博物馆，而是让它在生活中继续流淌。
+                </h3>
+                <p class="text-sm text-gray-600 leading-relaxed animate__animated animate__fadeInUp delay-100">
+                    伊玛堪的成功“转正”，是赫哲族文化生命力的见证，也是中华民族守护精神家园的缩影。
+                </p>
+                <div class="mt-12 w-24 h-1 bg-gray-800 mx-auto animate__animated animate__zoomIn delay-200"></div>
+            </div>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- 9️⃣ 署名页 -->
+        <section class="page bg-black text-gray-400 px-6 text-center">
+            <div class="animate__animated animate__fadeIn">
+                <div class="mb-8">
+                    <h4 class="text-white text-lg font-bold mb-2">新闻与新媒体课程作业</h4>
+                    <p class="text-xs tracking-widest uppercase">News & New Media Coursework</p>
+                </div>
+
+                <div class="space-y-2 text-sm mb-12">
+                    <p>策划 / 编辑 / 制作</p>
+                    <p class="text-white font-bold text-lg">[ 您的姓名 ]</p>
+                    <p class="text-xs">前端工程师 & 非遗文化编辑</p>
+                </div>
+
+                <div class="text-xs text-gray-600">
+                    <p>素材来源：联合国教科文组织官网、中国非物质文化遗产网</p>
+                    <p class="mt-2">Copyright © 2023 University Course Project</p>
+                </div>
+                
+                <!-- 重新观看按钮 -->
+                <button onclick="scrollToTop()" class="mt-12 border border-gray-600 text-gray-400 px-6 py-2 rounded-full text-xs hover:bg-gray-800 transition-colors">
+                    <i class="fas fa-redo mr-2"></i>重新观看
+                </button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JavaScript 逻辑 -->
+    <script>
+        // 1. 监听滚动，触发动画
+        // 使用 IntersectionObserver API 高效检测页面可见性
+        document.addEventListener("DOMContentLoaded", function() {
+            const pages = document.querySelectorAll('.page');
+            
+            const observerOptions = {
+                root: document.getElementById('h5-container'),
+                threshold: 0.5 // 当页面显示 50% 时触发
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 添加 active 类，配合 CSS 触发 animate.css 动画
+                        entry.target.classList.add('active');
+                    } else {
+                        // 可选：移出时移除类，实现重复播放效果
+                        // entry.target.classList.remove('active');
+                    }
+                });
+            }, observerOptions);
+
+            pages.forEach(page => {
+                observer.observe(page);
+            });
+        });
+
+        // 2. 互动页逻辑
+        const interactionData = {
+            'digital': {
+                title: '💡 数字化是传播的翅膀',
+                text: '这是非常符合当下趋势的选择！通过短视频、VR体验和数字化档案，可以让伊玛堪突破地域限制，被更多互联网原住民看到。'
+            },
+            'school': {
+                title: '🌱 教育是传承的根基',
+                text: '非常有远见！非遗进校园能从小培养文化认同感，让孩子们成为未来的传承者和守护者。'
+            },
+            'tourism': {
+                title: '🌏 文旅融合是活态生存',
+                text: '很棒的思路！在乌苏里江畔的旅游体验中植入伊玛堪说唱，能让非遗产生经济价值，实现“以养代保”。'
+            }
+        };
+
+        function handleInteraction(type) {
+            const area = document.getElementById('interaction-area');
+            const feedback = document.getElementById('feedback-area');
+            const title = document.getElementById('feedback-title');
+            const text = document.getElementById('feedback-text');
+
+            // 隐藏选项，显示反馈
+            area.style.display = 'none';
+            feedback.classList.remove('hidden');
+            
+            // 填充内容
+            title.textContent = interactionData[type].title;
+            text.textContent = interactionData[type].text;
+        }
+
+        function resetInteraction() {
+            document.getElementById('interaction-area').style.display = 'block';
+            document.getElementById('feedback-area').classList.add('hidden');
+        }
+
+        // 3. 辅助功能：回到顶部
+        function scrollToTop() {
+            const container = document.getElementById('h5-container');
+            container.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
