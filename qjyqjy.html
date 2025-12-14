@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>听浪观鸥冬趣浓 - 烟台冬季特别报道</title>
+    <!-- 引入 Tailwind CSS 进行快速样式构建 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts: 使用 Ma Shan Zheng 作为手写风格标题，Noto Sans SC 作为正文 -->
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 全局样式设定 */
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            overflow: hidden; /* 防止橡皮筋效果 */
+        }
+
+        .handwritten {
+            font-family: 'Ma Shan Zheng', cursive;
+        }
+
+        /* 隐藏滚动条但保留滚动功能 */
+        .snap-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .snap-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 每一页的设定 */
+        .page {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 颜色变量 */
+        .bg-sea-blue { background-color: #1e3c72; }
+        .text-sea-blue { color: #1e3c72; }
+        .bg-warm-orange { background-color: #ff9a44; }
+        .text-warm-orange { color: #ff9a44; }
+
+        /* 动画定义 */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .wave-bg {
+            background: linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0; /* 初始隐藏 */
+        }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-800 { animation-delay: 0.8s; }
+
+        @keyframes arrow-bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+            40% {transform: translateY(-10px) translateX(-50%);}
+            60% {transform: translateY(-5px) translateX(-50%);}
+        }
+        .arrow-up {
+            animation: arrow-bounce 2s infinite;
+        }
+
+        /* 模态框过渡 */
+        .modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.hidden-modal {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .modal.visible-modal {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* 简单的加载动画 */
+        #loader {
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loader" class="fixed inset-0 z-50 bg-sea-blue flex flex-col items-center justify-center text-white">
+        <svg class="w-16 h-16 animate-float mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 15a4 4 0 0 0 4 4 2 2 0 0 0 2-2 6 6 0 0 1 6-6 6 6 0 0 1 6 6 2 2 0 0 0 2 2 4 4 0 0 0 4-4V5s-4 4-8 0-8 4-8 0-8 4-8 0z"></path>
+        </svg>
+        <p class="tracking-widest text-sm">正在抵达烟台海滨...</p>
+    </div>
+
+    <!-- Main Container -->
+    <main class="snap-container">
+
+        <!-- Page 1: 封面页 -->
+        <section class="page bg-sea-blue text-white relative items-center justify-center">
+            <!-- 动态背景装饰 -->
+            <div class="absolute inset-0 opacity-20 wave-bg"></div>
+            <div class="absolute bottom-0 left-0 w-full">
+                <svg viewBox="0 0 1440 320" class="w-full h-auto text-white fill-current opacity-30">
+                    <path d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                </svg>
+            </div>
+
+            <!-- 内容 -->
+            <div class="z-10 text-center px-6">
+                <!-- 手绘海鸥 SVG -->
+                <svg class="w-24 h-24 mx-auto mb-6 text-warm-orange animate-float" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M22.5 12c0-5.799-4.701-10.5-10.5-10.5S1.5 6.201 1.5 12c0 2.275.726 4.385 1.954 6.104l-2.035 4.577C1.196 23.296 1.996 24 2.709 24h.025c.348 0 .674-.176.861-.465l2.258-4.14C7.398 21.365 9.854 22.5 12.5 22.5c5.799 0 10.5-4.701 10.5-10.5zm-19.5 0c0-4.962 4.037-9 9-9s9 4.038 9 9-4.038 9-9 9-9-4.038-9-9z"/>
+                    <path d="M16.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-8 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                    <path d="M12.5 16.5c2.336 0 4.256-1.579 4.814-3.75h-9.628c.558 2.171 2.478 3.75 4.814 3.75z"/>
+                </svg>
+
+                <h1 class="text-5xl handwritten mb-4 fade-in-up">听浪观鸥<br><span class="text-warm-orange">冬趣浓</span></h1>
+                <div class="w-16 h-1 bg-white mx-auto mb-4 rounded fade-in-up delay-200"></div>
+                <p class="text-lg font-light fade-in-up delay-500 tracking-widest">—— 烟台冬日限定浪漫 ——</p>
+            </div>
+
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/80 text-sm arrow-up">
+                <p>上滑开启观鸥之旅</p>
+                <svg class="w-6 h-6 mx-auto mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+        </section>
+
+        <!-- Page 2: 新闻正文页 -->
+        <section class="page bg-white items-stretch">
+            <!-- 上半部分图片区 -->
+            <div class="h-1/2 w-full relative overflow-hidden bg-gray-200">
+                <img src="https://images.unsplash.com/photo-1473163928189-364b2c4e1135?q=80&w=1000&auto=format&fit=crop" 
+                     class="w-full h-full object-cover" 
+                     alt="烟台海边海鸥">
+                <div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs text-sea-blue shadow cursor-pointer animate-pulse"
+                     onclick="showModal('knowledgeModal')">
+                    💡 点击了解：红嘴鸥的秘密
+                </div>
+            </div>
+
+            <!-- 下半部分文字区 -->
+            <div class="h-1/2 p-6 flex flex-col justify-center bg-white relative">
+                <!-- 装饰性波浪 -->
+                <div class="absolute top-[-20px] left-0 w-full h-8 bg-white" style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;"></div>
+                
+                <h2 class="text-2xl font-bold text-sea-blue mb-4 flex items-center">
+                    <span class="w-2 h-6 bg-warm-orange mr-2 rounded"></span>
+                    万鸥翔集 烟台冬韵
+                </h2>
+                <p class="text-gray-600 leading-relaxed text-justify mb-4 text-sm">
+                    入冬以来，烟台沿海一线迎来了一年中最灵动的时刻。成千上万只红嘴鸥如约而至，它们或在海面上盘旋起舞，或在沙滩上悠闲踱步。
+                </p>
+                <p class="text-gray-600 leading-relaxed text-justify text-sm">
+                    人鸥互动的温馨画面，已成为烟台冬季最温暖的风景线。这不仅是一场视觉盛宴，更是港城生态持续向好的生动注脚。
+                </p>
+            </div>
+        </section>
+
+        <!-- Page 3: 互动体验页 -->
+        <section class="page bg-slate-50 relative">
+            <div class="p-6 pt-12 h-full flex flex-col">
+                <h2 class="handwritten text-3xl text-sea-blue mb-8 text-center">沉浸 · 听浪识鸥</h2>
+
+                <!-- 模块一：音频互动 -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 transform transition active:scale-95 duration-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-lg mb-1">来自大海的白噪音</h3>
+                            <p class="text-xs text-gray-500">戴上耳机，此刻就在海边</p>
+                        </div>
+                        <button id="playBtn" class="w-12 h-12 bg-sea-blue rounded-full flex items-center justify-center text-white shadow-lg relative overflow-hidden" onclick="toggleAudio()">
+                            <!-- 播放图标 -->
+                            <svg id="iconPlay" class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            <!-- 暂停图标 -->
+                            <svg id="iconPause" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                            <!-- 播放时的波纹动画 -->
+                            <span id="audioWave" class="absolute inset-0 border-2 border-white rounded-full opacity-0"></span>
+                        </button>
+                    </div>
+                    <!-- 隐藏的音频标签 -->
+                    <audio id="seaAudio" loop>
+                        <!-- 使用免费的自然音效源，如无法播放需替换为本地文件 -->
+                        <source src="https://cdn.pixabay.com/download/audio/2022/03/24/audio_03e061730d.mp3?filename=beach-sea-waves-10026.mp3" type="audio/mpeg">
+                        您的浏览器不支持音频播放。
+                    </audio>
+                </div>
+
+                <!-- 模块二：定格鸥趣 -->
+                <div class="flex-1 flex flex-col">
+                    <h3 class="font-bold text-lg mb-4 pl-2 border-l-4 border-warm-orange">定格鸥趣</h3>
+                    <div class="grid grid-cols-2 gap-3 flex-1 max-h-[40vh]">
+                        <!-- 图片 1 -->
+                        <div class="bg-gray-200 rounded-xl overflow-hidden shadow cursor-pointer relative group" onclick="viewImage(this)">
+                            <img src="https://hellorfimg.zcool.cn/provider_image/large/hi2244393333.jpg" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="抢食瞬间">
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-2">
+                                <span class="text-white text-xs">空中接力</span>
+                            </div>
+                        </div>
+                        <!-- 图片 2 -->
+                        <div class="bg-gray-200 rounded-xl overflow-hidden shadow cursor-pointer relative group" onclick="viewImage(this)">
+                            <img src="https://qcloud.dpfile.com/pc/x8ulTX624muAREOw80bgi4gj5j6ZjF7jekTYcl2ymEWztIovP0BrKDTdf2ycVz5i.jpg" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="静立枝头">
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-2">
+                                <span class="text-white text-xs">静默守望</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 4: 地域延展页 (地图) -->
+        <section class="page bg-sea-blue text-white">
+            <div class="p-6 h-full flex flex-col items-center justify-center relative">
+                <h2 class="handwritten text-3xl mb-2 z-10">寻鸥地图</h2>
+                <p class="text-sm opacity-80 mb-8 z-10">点击图标探索最佳观赏点</p>
+
+                <!-- 手绘地图容器 -->
+                <div class="relative w-full aspect-[4/5] bg-white/10 backdrop-blur-sm rounded-3xl border-2 border-white/20 p-4 shadow-2xl">
+                    <!-- 简易海岸线 SVG -->
+                    <svg viewBox="0 0 300 400" class="absolute inset-0 w-full h-full opacity-30 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M0,100 Q50,120 100,80 T200,150 T300,120" />
+                        <path d="M0,200 Q80,220 150,180 T300,250" />
+                        <text x="20" y="350" class="text-xs fill-current opacity-50">Yantai Coastline</text>
+                    </svg>
+
+                    <!-- 地点 1: 烟台山 -->
+                    <div class="absolute top-[20%] left-[30%] flex flex-col items-center group cursor-pointer" onclick="showLocation('yt_hill')">
+                        <div class="w-10 h-10 bg-warm-orange rounded-full flex items-center justify-center animate-bounce shadow-lg z-20">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <span class="mt-1 text-sm font-bold bg-black/30 px-2 rounded">烟台山</span>
+                    </div>
+
+                    <!-- 地点 2: 第一海水浴场 -->
+                    <div class="absolute top-[45%] right-[20%] flex flex-col items-center group cursor-pointer" onclick="showLocation('first_beach')">
+                        <div class="w-10 h-10 bg-warm-orange rounded-full flex items-center justify-center animate-bounce delay-500 shadow-lg z-20">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <span class="mt-1 text-sm font-bold bg-black/30 px-2 rounded">第一海水浴场</span>
+                    </div>
+
+                    <!-- 志愿者故事插图区域 -->
+                    <div class="absolute bottom-4 left-4 right-4 bg-white/20 rounded-xl p-3 backdrop-blur-md">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-sea-blue font-bold mr-2 shrink-0">
+                                志
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm mb-1">守护者说</h4>
+                                <p class="text-xs opacity-90 leading-tight">“每年冬天给它们投喂小鱼，就像等老朋友回家一样。”<br>—— 护鸥志愿者 老张</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 5: 尾页 -->
+        <section class="page relative justify-end pb-12">
+            <!-- 全屏背景图 -->
+            <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover z-0" alt="夕阳海鸥">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80 z-10"></div>
+
+            <div class="z-20 px-8 text-center text-white">
+                <p class="handwritten text-4xl mb-4">烟台的冬</p>
+                <p class="text-lg font-light mb-8 opacity-90">因浪与鸥更生动</p>
+
+                <!-- 按钮组 -->
+                <div class="space-y-4 mb-10">
+                    <button onclick="shareTip()" class="w-full py-3 bg-warm-orange rounded-full font-bold shadow-lg transform active:scale-95 transition">
+                        分享给朋友
+                    </button>
+                    <button onclick="alert('观鸥指南已生成，请长按截图保存')" class="w-full py-3 bg-white/20 backdrop-blur border border-white/50 rounded-full font-bold shadow-lg transform active:scale-95 transition">
+                        保存观鸥指南
+                    </button>
+                </div>
+
+                <!-- 署名信息 -->
+                <div class="text-xs text-white/50 space-y-1">
+                    <p>摄影 / 文案：曲佳怡</p>
+                    <p>山东政法学院 网络与新媒体专业实践作品</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 弹窗组件：鸥鸟小知识 -->
+    <div id="knowledgeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 modal hidden-modal p-6" onclick="closeModal('knowledgeModal')">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-sm relative" onclick="event.stopPropagation()">
+            <button onclick="closeModal('knowledgeModal')" class="absolute top-2 right-3 text-gray-400 text-2xl">&times;</button>
+            <h3 class="text-xl font-bold text-sea-blue mb-3">🧐 鸥鸟冷知识</h3>
+            <div class="space-y-2 text-sm text-gray-700">
+                <p><span class="font-bold text-warm-orange">Q:</span> 为什么它们偏爱烟台？</p>
+                <p class="mb-2">A: 烟台近海海湾平缓，浮游生物丰富，加上市民友好的投喂，让这里成了五星级“过冬度假村”。</p>
+                <hr class="border-gray-100">
+                <p><span class="font-bold text-warm-orange">Q:</span> 它的嘴为什么是红的？</p>
+                <p>A: 繁殖期时嘴和脚呈亮红色，非繁殖期（冬天）颜色会稍暗，这是它们成熟的标志哦。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗组件：地点介绍 -->
+    <div id="locationModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 modal hidden-modal p-8" onclick="closeModal('locationModal')">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-sm text-center transform transition-all scale-100" onclick="event.stopPropagation()">
+            <div class="w-12 h-12 bg-sea-blue text-white rounded-full flex items-center justify-center mx-auto -mt-10 mb-4 border-4 border-white shadow-lg">
+                📍
+            </div>
+            <h3 id="locTitle" class="text-xl font-bold text-gray-800 mb-2">地点名称</h3>
+            <p id="locDesc" class="text-gray-600 text-sm">描述文本</p>
+            <button onclick="closeModal('locationModal')" class="mt-6 px-6 py-2 bg-gray-100 rounded-full text-sm text-gray-500">关闭</button>
+        </div>
+    </div>
+
+    <!-- 弹窗组件：图片查看器 -->
+    <div id="imageModal" class="fixed inset-0 z-50 bg-black flex items-center justify-center modal hidden-modal" onclick="closeModal('imageModal')">
+        <img id="imagePreview" src="" class="max-w-full max-h-screen object-contain p-2" alt="Preview">
+    </div>
+
+    <!-- 微信分享提示遮罩 (模拟) -->
+    <div id="shareOverlay" class="fixed inset-0 z-[60] bg-black/80 hidden text-right pr-8 pt-4" onclick="this.classList.add('hidden')">
+        <p class="text-white text-lg font-bold">请点击右上角 <span class="text-3xl">...</span></p>
+        <p class="text-white text-lg font-bold">选择“发送给朋友”或“分享到朋友圈”</p>
+    </div>
+
+    <script>
+        // 1. Loading 动画逻辑
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 1500); // 模拟加载时间，实际中视资源加载情况而定
+        });
+
+        // 2. 模态框通用逻辑
+        function showModal(id) {
+            document.getElementById(id).classList.remove('hidden-modal');
+            document.getElementById(id).classList.add('visible-modal');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('visible-modal');
+            document.getElementById(id).classList.add('hidden-modal');
+        }
+
+        // 3. 音频播放逻辑
+        function toggleAudio() {
+            const audio = document.getElementById('seaAudio');
+            const btn = document.getElementById('playBtn');
+            const iconPlay = document.getElementById('iconPlay');
+            const iconPause = document.getElementById('iconPause');
+            const wave = document.getElementById('audioWave');
+
+            if (audio.paused) {
+                audio.play();
+                iconPlay.classList.add('hidden');
+                iconPause.classList.remove('hidden');
+                wave.classList.add('animate-ping');
+            } else {
+                audio.pause();
+                iconPlay.classList.remove('hidden');
+                iconPause.classList.add('hidden');
+                wave.classList.remove('animate-ping');
+            }
+        }
+
+        // 4. 图片查看逻辑
+        function viewImage(element) {
+            const imgSrc = element.querySelector('img').src;
+            document.getElementById('imagePreview').src = imgSrc;
+            showModal('imageModal');
+        }
+
+        // 5. 地图地点逻辑
+        const locations = {
+            'yt_hill': {
+                title: '烟台山风景区',
+                desc: '拥有绝佳的观海视野，可俯瞰鸥群绕灯塔飞翔的壮丽景观。'
+            },
+            'first_beach': {
+                title: '第一海水浴场',
+                desc: '沙滩开阔，人鸥距离最近，适合带着小面包与海鸥亲密合影。'
+            }
+        };
+
+        function showLocation(key) {
+            const data = locations[key];
+            if(data) {
+                document.getElementById('locTitle').innerText = data.title;
+                document.getElementById('locDesc').innerText = data.desc;
+                showModal('locationModal');
+            }
+        }
+
+        // 6. 分享提示
+        function shareTip() {
+            const overlay = document.getElementById('shareOverlay');
+            overlay.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
