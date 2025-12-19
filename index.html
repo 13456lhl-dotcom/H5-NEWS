@@ -2,9 +2,9 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 增加 viewport-fit=cover 适配全面屏刘海和底部小黑条 -->
+    <!-- 适配全面屏刘海和底部小黑条 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>赫哲族伊玛堪：从“急需保护”到“人类非遗代表作”</title>
+    <title>江畔绝响 · 重焕新生：赫哲族伊玛堪</title>
     
     <!-- 引入 Tailwind CSS 进行快速布局 -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,467 +14,567 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 
     <style>
-        /* --- 基础样式与字体 --- */
+        /* --- 1. 基础样式与字体 --- */
+        :root {
+            --deep-blue: #001f3f; /* 深青色 */
+            --night-black: #0a0a0a;
+            --luxury-gold: #D4AF37; /* 金色 */
+            --moon-white: #F5F5F5; /* 月白色 */
+        }
+
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             overflow: hidden; /* 禁止普通滚动 */
-            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            font-family: 'PingFang SC', 'Noto Serif SC', 'Microsoft YaHei', serif; /* 增加衬线体以提升文化感 */
+            background-color: var(--deep-blue);
+            color: var(--moon-white);
         }
 
-        /* --- 核心交互：纵向整屏滚动 (Scroll Snap) --- */
+        /* --- 2. 核心交互：纵向整屏滚动 (Scroll Snap) --- */
         #h5-container {
             height: 100%;
             overflow-y: scroll;
             scroll-snap-type: y mandatory; /* 强制纵向吸附 */
             scroll-behavior: smooth;
-            /* 增加 iOS 滚动惯性支持 */
-            -webkit-overflow-scrolling: touch;
+            -webkit-overflow-scrolling: touch; /* iOS 惯性滚动 */
         }
 
         .page {
-            /* [修改点 1] 改为 100% 而非 100vh，避免手机浏览器底部工具栏遮挡内容 */
             height: 100%; 
             width: 100%;
-            scroll-snap-align: start; /* 滚动停止时吸附到顶部 */
+            scroll-snap-align: start; /* 吸附顶部 */
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            /* 适配 iPhone 底部安全区 */
             padding-bottom: env(safe-area-inset-bottom);
+            background: var(--night-black); /* 默认背景 */
         }
 
-        /* --- 视觉装饰 --- */
-        /* 背景纹理：象征江水与流动 */
-        .bg-water-pattern {
-            background-color: #1a365d;
-            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232c5282' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
-        }
+        /* --- 3. 视觉装饰：文化遗产背景生成 --- */
         
-        /* 赫哲族桦树皮纹理感背景 */
-        .bg-paper {
-            background-color: #fdfbf7;
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 20px 20px;
+        /* 【第一页背景：鱼皮图腾 · 浪潮】 */
+        .bg-hero-culture {
+            background: 
+                /* 顶层：金色鱼鳞纹理 (模拟赫哲族鱼皮衣工艺) */
+                radial-gradient(circle at 50% 50%, transparent 50%, rgba(212, 175, 55, 0.05) 51%, transparent 52%),
+                /* 中层：鱼鳞交错图案 */
+                radial-gradient(circle at 100% 50%, transparent 20%, rgba(255,255,255,0.03) 21%, rgba(255,255,255,0.03) 34%, transparent 35%, transparent),
+                radial-gradient(circle at 0% 50%, transparent 20%, rgba(255,255,255,0.03) 21%, rgba(255,255,255,0.03) 34%, transparent 35%, transparent),
+                /* 底层：深水渐变 */
+                linear-gradient(180deg, var(--deep-blue) 0%, #000 100%);
+            background-size: 40px 40px, 60px 60px, 60px 60px, 100% 100%;
+            background-position: 0 0, 0 0, 30px 30px, 0 0;
         }
 
-        /* 强调文字样式 */
-        .news-header {
-            border-left: 4px solid #c05621; /* 橙色强调线 */
-            padding-left: 12px;
-        }
-
-        /* --- 动画控制 --- */
-        /* 只有当页面处于激活状态时，才播放动画 */
-        .page .animate__animated {
-            opacity: 0; /* 初始隐藏 */
-        }
-        .page.active .animate__animated {
-            opacity: 1; /* 激活后显示 */
-        }
-
-        /* --- 下滑提示箭头 --- */
-        .scroll-indicator {
+        /* 旋转的图腾光环 */
+        .totem-ring {
             position: absolute;
-            bottom: 30px; /* 稍微调高，避免贴底 */
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            border: 1px dashed rgba(212, 175, 55, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: spin 60s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .totem-ring::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 50%;
+        }
+
+        /* 【第二页背景：桦树皮 · 历史刻痕】 */
+        .bg-birch-history {
+            background-color: #1a1a1a;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.02) 20px),
+                repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(0,0,0,0.2) 50px, rgba(0,0,0,0.2) 52px),
+                linear-gradient(to bottom, #1a1a1a, #2d2d2d);
+        }
+        .fire-glow {
+            position: absolute;
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
-            animation: bounce 2s infinite;
-            color: rgba(0,0,0,0.3);
-            z-index: 10;
-        }
-        .scroll-indicator.light {
-            color: rgba(255,255,255,0.6);
+            width: 100%;
+            height: 300px;
+            background: radial-gradient(ellipse at center, rgba(200, 100, 0, 0.15) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+            animation: flicker 4s infinite alternate;
         }
 
+        /* --- 4. 组件样式 --- */
+        .gold-border-l { border-left: 3px solid var(--luxury-gold); padding-left: 1rem; }
+        .text-gold { color: var(--luxury-gold); }
+
+        .media-placeholder {
+            border: 1px dashed var(--luxury-gold);
+            background: rgba(0, 31, 63, 0.5);
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+            color: rgba(255,255,255,0.6); transition: all 0.3s;
+        }
+        .media-placeholder:hover { background: rgba(212, 175, 55, 0.1); }
+
+        .interact-btn {
+            border: 1px solid var(--luxury-gold);
+            color: var(--luxury-gold); background: transparent; transition: all 0.3s ease;
+        }
+        .interact-btn:active { background: var(--luxury-gold); color: var(--deep-blue); }
+
+        .page .animate__animated { opacity: 0; }
+        .page.active .animate__animated { opacity: 1; }
+
+        .scroll-indicator {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            animation: bounce 2s infinite; color: var(--luxury-gold); z-index: 10; opacity: 0.7;
+        }
+        
+        /* 动画定义 */
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
             40% {transform: translateX(-50%) translateY(-10px);}
-            60% {transform: translateX(-50%) translateY(-5px);}
+        }
+        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes flicker { 0% { opacity: 0.8; } 100% { opacity: 1; transform: translateX(-50%) scale(1.05); } }
+        @keyframes dash { to { stroke-dashoffset: 0; } }
+
+        /* 地图路径动画 */
+        .river-path {
+            stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: dash 5s linear forwards;
+        }
+        .timeline-line {
+            position: absolute; left: 15px; top: 10px; bottom: 10px; width: 1px; background: rgba(212, 175, 55, 0.3);
         }
 
-        /* --- 互动页样式 --- */
-        .option-btn {
-            transition: all 0.3s ease;
-        }
-        .option-btn:active {
-            transform: scale(0.95);
+        /* --- NEW: 3D Earth Styles --- */
+        .earth-container {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            position: relative;
+            margin: 0 auto 2rem;
+            background: #00152e;
+            box-shadow: 
+                inset -20px -20px 50px rgba(0,0,0,0.9), /* 内部深色阴影 */
+                0 0 30px rgba(212, 175, 55, 0.4); /* 外部金色光晕 */
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
         }
         
-        /* 隐藏滚动条但保留功能 */
-        ::-webkit-scrollbar {
-            width: 0px;
-            background: transparent;
+        .earth-texture {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%; /* 宽度200%以实现循环滚动 */
+            height: 100%;
+            /* 使用真实地图纹理，通过滤镜处理成金色风格 */
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg');
+            background-size: cover;
+            background-position: 0 0;
+            opacity: 0.6;
+            filter: sepia(1) hue-rotate(5deg) contrast(1.2) brightness(0.8);
+            animation: rotateEarth 30s linear infinite;
         }
+
+        .earth-shadow-overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, transparent 50%, rgba(0,0,0,0.85) 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .earth-atmosphere {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            box-shadow: inset 2px 2px 10px rgba(255,255,255,0.1);
+            z-index: 3;
+        }
+
+        @keyframes rotateEarth {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* 背景肌理 */
+        .texture-fish-skin {
+            position: absolute; inset: 0; opacity: 0.1;
+            background-image: linear-gradient(135deg, #000 25%, transparent 25%);
+            background-size: 20px 20px; pointer-events: none;
+        }
+        .texture-ripple {
+            position: absolute; top: 50%; left: 50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, transparent 20%, rgba(255,255,255,0.03) 21%, transparent 22%);
+            transform: translate(-50%, -50%) rotate(45deg); opacity: 0.3; pointer-events: none;
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- 主容器 -->
     <div id="h5-container">
 
         <!-- 1️⃣ 封面页 -->
-        <section class="page bg-water-pattern text-white relative">
-            <div class="absolute inset-0 bg-black bg-opacity-30"></div> <!-- 遮罩 -->
-            <div class="relative z-10 px-8 text-center">
-                <div class="mb-4 inline-block px-3 py-1 border border-white rounded-full text-xs tracking-widest animate__animated animate__fadeInDown">
-                    非遗快讯 · 特别报道
+        <section class="page bg-hero-culture relative overflow-hidden">
+            <div class="totem-ring"></div>
+            <div class="relative z-10 px-8 text-center flex flex-col items-center h-full justify-center">
+                <div class="mb-6 p-1 border-y border-yellow-600 inline-block animate__animated animate__fadeInDown">
+                    <span class="text-xs tracking-[0.3em] uppercase text-gray-400">Intangible Cultural Heritage</span>
                 </div>
-                <h1 class="text-4xl font-bold leading-tight mb-4 animate__animated animate__zoomIn delay-100">
-                    赫哲族<br>伊玛堪
+                <h1 class="text-5xl font-bold leading-tight mb-6 animate__animated animate__zoomIn delay-100 font-serif text-white drop-shadow-lg">
+                    江畔绝响<br>
+                    <span class="text-gold text-4xl block mt-2">重焕新生</span>
                 </h1>
-                <h2 class="text-xl font-light opacity-90 mb-8 animate__animated animate__fadeInUp delay-200">
-                    转入《人类非物质文化遗产<br>代表作名录》
-                </h2>
-                <p class="text-sm opacity-70 animate__animated animate__fadeIn delay-300">
-                    见证非遗保护从“抢救”走向“传承”
+                <p class="text-sm font-light leading-relaxed opacity-80 max-w-xs mx-auto animate__animated animate__fadeInUp delay-200 border-t border-gray-700 pt-6 mt-4 text-gray-200">
+                    赫哲族伊玛堪正式转入<br>
+                    《人类非物质文化遗产代表作名录》
                 </p>
+                <div class="mt-12 w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center animate__animated animate__fadeIn delay-500 media-placeholder backdrop-blur-sm" style="border-style: solid;">
+                    <i class="fas fa-volume-up text-xs"></i>
+                </div>
+                <p class="text-[10px] text-gray-400 mt-2 animate__animated animate__fadeIn delay-500">点击聆听史诗原声</p>
             </div>
-            <!-- 下滑提示 -->
-            <div class="scroll-indicator light">
-                <i class="fas fa-chevron-down text-2xl"></i>
-            </div>
+            <div class="scroll-indicator"><i class="fas fa-angle-double-down text-2xl"></i></div>
         </section>
 
-        <!-- 2️⃣ 新闻导语页 -->
-        <section class="page bg-white px-6">
-            <div class="max-w-md mx-auto w-full">
-                <h3 class="text-2xl font-bold text-gray-800 mb-6 news-header animate__animated animate__fadeInRight">
-                    新闻速览
-                </h3>
-                <div class="space-y-4 text-gray-700 leading-relaxed text-justify animate__animated animate__fadeInUp delay-100">
-                    <p>
-                        <span class="font-bold text-blue-800">【翰林讯】</span>
-                        近日，联合国教科文组织正式决议，将中国的“赫哲族伊玛堪”从《急需保护的非物质文化遗产名录》转入《人类非物质文化遗产代表作名录》。
+        <!-- 2️⃣ 导语页 -->
+        <section class="page bg-birch-history relative px-8">
+            <div class="fire-glow"></div>
+            <div class="relative z-10 max-w-md mx-auto">
+                <h2 class="text-3xl font-serif text-gold mb-8 animate__animated animate__fadeInLeft drop-shadow-md">文明的跨越</h2>
+                <div class="space-y-6 text-justify font-light leading-relaxed text-gray-300 animate__animated animate__fadeInUp delay-100">
+                    <p class="first-letter:text-4xl first-letter:text-gold first-letter:mr-2 first-letter:float-left">
+                        壹12月11日，联合国教科文组织保护非物质文化遗产政府间委员会第20届常会召开，我国申报的赫哲族伊玛堪通过评审，成功从急需保护的非物质文化遗产名录转入人类非物质文化遗产代表作名录。
                     </p>
                     <p>
-                        这一里程碑式的转变，标志着该项目的保护成效获得了国际社会的高度认可，也象征着中国在濒危非遗项目的抢救性保护工作中取得了突破性进展，实现了从“濒危抢救”向“系统性传承”的历史性跨越。
+                        这意味着我国“赫哲族伊玛堪”近年来的保护传承工作取得了国际认可的显著成效。它标志着这一古老渔猎民族的精神火种，终于跨越了濒临熄灭的危机，迎来了从<span class="text-white border-b border-yellow-600">“抢救性保护”</span>向<span class="text-white border-b border-yellow-600">“系统性传承”</span>的历史性绽放。
                     </p>
                 </div>
             </div>
-            <div class="scroll-indicator">
-                <i class="fas fa-chevron-down text-2xl"></i>
-            </div>
+            <div class="scroll-indicator"><i class="fas fa-angle-down"></i></div>
         </section>
 
-        <!-- 3️⃣ 赫哲族与伊玛堪介绍页 -->
-        <section class="page bg-paper px-6">
-            <div class="w-full">
-                <!-- 示意图：三江平原赫哲族渔猎场景 -->
-                <!-- [修改点] 修复了 < img 之间的空格，添加了 referrerpolicy 属性以支持外部链接图片 -->
-                <img 
-                    src="https://bkimg.cdn.bcebos.com/pic/8326cffc1e178a82b901a67b0b4b648da9773812429c" 
-                    alt="三江平原赫哲族传统渔猎生活场景" 
-                    class="w-full h-48 object-cover rounded-lg mb-2 shadow-md animate__animated animate__fadeIn"
-                    referrerpolicy="no-referrer"
-                >
+        <!-- 3️⃣ 科普页：地图 -->
+        <section class="page px-6" style="background: linear-gradient(180deg, var(--deep-blue) 0%, var(--night-black) 100%);">
+            <div class="w-full relative z-10">
+                <div class="gold-border-l animate__animated animate__fadeInLeft mb-6">
+                    <h3 class="text-xl font-bold text-white mb-2">三江滋养的民族</h3>
+                    <p class="text-sm text-gray-400">分布在黑龙江、松花江、乌苏里江流域</p>
+                </div>
+                <!-- 交互地图容器 -->
+                <div class="relative w-full h-64 bg-[#051125] rounded-lg border border-white/10 overflow-hidden mb-6 shadow-2xl animate__animated animate__fadeIn group">
+                    <svg viewBox="0 0 400 300" class="w-full h-full absolute inset-0 opacity-60">
+                        <defs>
+                            <linearGradient id="riverGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#1a365d;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#2b6cb0;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M-20,50 Q150,80 250,50 T450,30" fill="none" stroke="url(#riverGrad)" stroke-width="25" class="river-path" style="animation-delay: 0s"/>
+                        <path d="M50,300 Q120,200 180,140" fill="none" stroke="#2c5282" stroke-width="18" class="river-path" style="animation-delay: 0.5s"/>
+                        <path d="M350,300 Q320,200 280,100" fill="none" stroke="#2c5282" stroke-width="18" class="river-path" style="animation-delay: 1s"/>
+                        <text x="50" y="45" fill="#4a5568" font-size="12" font-weight="bold" transform="rotate(-5)">黑龙江</text>
+                        <text x="60" y="260" fill="#4a5568" font-size="12" font-weight="bold" transform="rotate(-40)">松花江</text>
+                        <text x="310" y="260" fill="#4a5568" font-size="12" font-weight="bold" transform="rotate(20)">乌苏里江</text>
+                    </svg>
+                    <!-- 交互热点 -->
+                    <div onclick="updateMapInfo('tongjiang')" class="absolute top-[35%] left-[40%] cursor-pointer z-20 flex flex-col items-center group-hover:scale-110 transition-transform hover:z-30">
+                        <div class="relative">
+                            <div class="w-5 h-5 bg-gold rounded-full animate-ping absolute inset-0 opacity-75"></div>
+                            <div class="w-5 h-5 bg-gold rounded-full border-2 border-black shadow-[0_0_15px_#D4AF37] flex items-center justify-center">
+                                <i class="fas fa-star text-[8px] text-black"></i>
+                            </div>
+                        </div>
+                        <span class="text-[10px] text-white mt-1 bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm border border-gold/30">同江</span>
+                    </div>
+                    <div onclick="updateMapInfo('raohe')" class="absolute top-[60%] right-[20%] cursor-pointer z-20 flex flex-col items-center group-hover:scale-110 transition-transform hover:z-30">
+                        <div class="relative">
+                            <div class="w-4 h-4 bg-white rounded-full animate-ping absolute inset-0 opacity-50"></div>
+                            <div class="w-4 h-4 bg-white rounded-full border border-gold"></div>
+                        </div>
+                        <span class="text-[10px] text-gray-300 mt-1 bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm">饶河</span>
+                    </div>
+                    <div onclick="updateMapInfo('fuyuan')" class="absolute top-[20%] right-[10%] cursor-pointer z-20 flex flex-col items-center group-hover:scale-110 transition-transform hover:z-30">
+                        <div class="relative">
+                            <div class="w-4 h-4 bg-white rounded-full animate-ping absolute inset-0 opacity-50"></div>
+                            <div class="w-4 h-4 bg-white rounded-full border border-gold"></div>
+                        </div>
+                        <span class="text-[10px] text-gray-300 mt-1 bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm">抚远</span>
+                    </div>
+                    <div id="map-hint" class="absolute bottom-3 right-3 text-[10px] text-gold border border-gold/50 px-2 py-1 rounded bg-black/70 backdrop-blur pointer-events-none animate__animated animate__pulse animate__infinite">
+                        <i class="fas fa-hand-pointer mr-1"></i> 点击节点探索
+                    </div>
+                </div>
+                <div id="map-info-box" class="bg-white/5 p-4 rounded-lg border border-gold/20 min-h-[110px] flex items-center justify-center text-center animate__animated animate__fadeInUp transition-all duration-300 backdrop-blur-sm">
+                    <p class="text-sm text-gray-400">
+                        <i class="fas fa-map-marked-alt text-2xl mb-2 block opacity-50"></i>
+                        点击上方地图节点<br>探索伊玛堪传习地分布
+                    </p>
+                </div>
+            </div>
+            <div class="scroll-indicator"><i class="fas fa-angle-down"></i></div>
+        </section>
 
-                <p class="text-xs text-gray-500 text-center mb-6">
-                    图示：三江平原地区赫哲族传统渔猎生活场景（图片来源：百科图片，示意）
+        <!-- 4️⃣ 艺术页：多媒体 -->
+        <section class="page px-6 bg-black" style="background: linear-gradient(180deg, var(--night-black) 0%, var(--deep-blue) 100%);">
+            <div class="texture-ripple"></div>
+            <div class="relative z-10 w-full">
+                <div class="text-center mb-8 animate__animated animate__fadeInDown">
+                    <i class="fas fa-fire text-orange-700 text-2xl mb-2 animate-pulse"></i>
+                    <h3 class="text-2xl font-serif text-gold">火塘边的咏叹</h3>
+                    <p class="text-xs text-gray-500 mt-1 tracking-widest">无伴奏 · 即兴说唱 · 民族记忆芯片</p>
+                </div>
+               <video
+  src="https://13456lhl-dotcom.github.io/H5-NEWS/video/Hezhezuyimakan.mp4"
+  controls
+  playsinline
+  webkit-playsinline
+  preload="metadata"
+  class="w-full rounded-lg mb-4 shadow-lg animate__animated animate__zoomIn delay-100"
+  poster=""
+>
+  您的浏览器不支持视频播放
+</video>
+                <div class="w-full h-16 rounded-full mt-6 media-placeholder flex-row px-6 animate__animated animate__fadeInUp delay-200">
+                    <i class="fas fa-music text-gold mr-4"></i>
+                    <div class="flex-1 h-1 bg-gray-600 rounded">
+                        <div class="w-1/3 h-full bg-gold rounded"></div>
+                    </div>
+                    <span class="text-[10px] ml-4 text-gray-400">[ 原声片段：英雄格沃 ]</span>
+                </div>
+                <p class="text-xs text-center text-gray-500 mt-8 italic animate__animated animate__fadeIn delay-300">
+                    "每一个音节，都是祖先灵魂的低语。"
                 </p>
-
-                <h3 class="text-xl font-bold text-gray-800 mb-4 animate__animated animate__fadeInLeft">
-                    江河上的守望者
-                </h3>
-                
-                <div class="bg-white p-5 shadow-md rounded-lg mb-4 animate__animated animate__fadeInUp delay-100">
-                    <h4 class="font-bold text-blue-900 mb-2 text-sm">
-                        <i class="fas fa-map-marker-alt mr-2"></i>地理分布
-                    </h4>
-                    <p class="text-sm text-gray-600">
-                        赫哲族是中国人口较少的少数民族之一，世居于黑龙江、松花江、乌苏里江流域，通过渔猎与自然共生。
-                    </p>
-                </div>
-
-                <div class="bg-white p-5 shadow-md rounded-lg animate__animated animate__fadeInUp delay-200">
-                    <h4 class="font-bold text-blue-900 mb-2 text-sm">
-                        <i class="fas fa-music mr-2"></i>何为“伊玛堪”？
-                    </h4>
-                    <p class="text-sm text-gray-600">
-                        赫哲族特有的口头叙事艺术。它没有乐器伴奏，仅凭艺人（“伊玛堪奇”）的说唱，
-                        讲述英雄史诗、渔猎生活与民族起源。
-                    </p>
-                </div>
             </div>
-            <div class="scroll-indicator">
-                <i class="fas fa-chevron-down text-2xl"></i>
-            </div>
+            <div class="scroll-indicator"><i class="fas fa-angle-down"></i></div>
         </section>
 
-        <!-- 4️⃣ 艺术与文化价值页 -->
-        <section class="page bg-gray-900 text-gray-100 px-6">
-            <div class="absolute top-0 right-0 p-10 opacity-10">
-                <i class="fas fa-microphone-alt text-9xl"></i>
-            </div>
-
-            <h3 class="text-2xl font-bold mb-8 border-b border-gray-700 pb-4 animate__animated animate__fadeInLeft">
-                口耳相传的史诗
-            </h3>
-
-            <ul class="space-y-6 animate__animated animate__fadeInUp delay-100">
-                <li class="flex items-start">
-                    <div class="bg-yellow-600 p-2 rounded text-white mr-4 shrink-0">
-                        <i class="fas fa-book-open"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-lg text-yellow-500">有声的历史书</h4>
-                        <p class="text-sm text-gray-400 mt-1">记录了赫哲族的历史变迁、民俗风情与宗教信仰，是该民族的精神系谱。</p>
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <div class="bg-yellow-600 p-2 rounded text-white mr-4 shrink-0">
-                        <i class="fas fa-language"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-lg text-yellow-500">语言的活化石</h4>
-                        <p class="text-sm text-gray-400 mt-1">在赫哲语濒临失传的背景下，伊玛堪保留了大量古语词汇，是语言传承的关键载体。</p>
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <div class="bg-yellow-600 p-2 rounded text-white mr-4 shrink-0">
-                        <i class="fas fa-theater-masks"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-lg text-yellow-500">独特的艺术形式</h4>
-                        <p class="text-sm text-gray-400 mt-1">融合了诗歌、音乐与叙事，大篇幅的韵文与散文交织，极具审美价值。</p>
-                    </div>
-                </li>
-            </ul>
-            <div class="scroll-indicator light">
-                <i class="fas fa-chevron-down text-2xl"></i>
-            </div>
-        </section>
-
-        <!-- 5️⃣ 保护历程页（时间线） -->
-        <section class="page bg-paper px-6">
-            <h3 class="text-center text-xl font-bold mb-10 text-gray-800 animate__animated animate__fadeInDown">
-                非遗保护的“进阶之路”
-            </h3>
-
-            <div class="relative border-l-4 border-gray-300 ml-4 py-2 space-y-12">
-                <!-- 节点 1 -->
+        <!-- 5️⃣ 历程页 -->
+        <section class="page px-8" style="background: linear-gradient(180deg, var(--deep-blue) 0%, var(--night-black) 100%);">
+            <h3 class="text-xl font-bold text-white mb-10 text-center animate__animated animate__fadeIn">十年守望 · 进阶之路</h3>
+            <div class="relative ml-2 space-y-10">
+                <div class="timeline-line"></div>
                 <div class="relative pl-8 animate__animated animate__fadeInRight delay-100">
-                    <div class="absolute -left-3 top-0 bg-gray-500 h-6 w-6 rounded-full border-4 border-white"></div>
-                    <div class="text-sm text-gray-500 font-bold">2006年</div>
-                    <h4 class="text-lg font-bold text-gray-800">国家级非遗</h4>
-                    <p class="text-sm text-gray-600 mt-1">被列入第一批国家级非物质文化遗产名录，保护工作正式启动。</p>
+                    <div class="absolute left-[11px] top-1 w-2 h-2 bg-gray-500 rounded-full border border-black z-10"></div>
+                    <span class="text-xs font-mono text-gray-500 block mb-1">2006</span>
+                    <h4 class="text-lg text-gray-300">入选国家级非遗名录</h4>
+                    <p class="text-xs text-gray-600 mt-1">国家层面的保护正式启动</p>
                 </div>
-
-                <!-- 节点 2 -->
                 <div class="relative pl-8 animate__animated animate__fadeInRight delay-200">
-                    <div class="absolute -left-3 top-0 bg-red-500 h-6 w-6 rounded-full border-4 border-white"></div>
-                    <div class="text-sm text-red-500 font-bold">2011年</div>
-                    <h4 class="text-lg font-bold text-red-800">急需保护名录</h4>
-                    <p class="text-sm text-gray-600 mt-1">因传承人年事已高、语言环境缺失，被列入联合国教科文组织《急需保护的非物质文化遗产名录》。</p>
+                    <div class="absolute left-[10px] top-1 w-3 h-3 bg-red-800 rounded-full border border-black z-10 shadow-[0_0_10px_rgba(153,27,27,0.5)]"></div>
+                    <span class="text-xs font-mono text-red-800 block mb-1">2011</span>
+                    <h4 class="text-lg text-gray-200">急需保护的非物质文化遗产名录</h4>
+                    <p class="text-xs text-gray-500 mt-1">面临失传风险，进入全球视野</p>
                 </div>
-
-                <!-- 节点 3 -->
                 <div class="relative pl-8 animate__animated animate__fadeInRight delay-300">
-                    <div class="absolute -left-3 top-0 bg-green-500 h-6 w-6 rounded-full border-4 border-white"></div>
-                    <div class="text-sm text-green-600 font-bold">现今</div>
-                    <h4 class="text-lg font-bold text-green-800">转入代表作名录</h4>
-                    <p class="text-sm text-gray-600 mt-1">经过多年抢救性记录与传习所建设，保护状况显著改善，成功转入《人类非物质文化遗产代表作名录》。</p>
+                    <div class="absolute left-[8px] top-0 w-4 h-4 bg-gold rounded-full border-2 border-white z-10 shadow-[0_0_15px_#D4AF37]"></div>
+                    <span class="text-sm font-mono text-gold font-bold block mb-1">2025</span>
+                    <h4 class="text-xl text-white font-serif">人类非物质文化遗产代表作名录</h4>
+                    <p class="text-xs text-gray-400 mt-2 border-l-2 border-gray-700 pl-2">
+                        标志着保护成效获得国际认可，从“抢救”走向“复兴”。
+                    </p>
                 </div>
             </div>
-            <div class="scroll-indicator">
-                <i class="fas fa-chevron-down text-2xl"></i>
-            </div>
+            <div class="scroll-indicator"><i class="fas fa-angle-down"></i></div>
         </section>
 
-        <!-- 6️⃣ 转入代表作名录的意义页 -->
-        <section class="page bg-blue-50 px-8 text-center">
-            <div class="w-16 h-1 bg-blue-800 mx-auto mb-6"></div>
-            <h3 class="text-2xl font-bold text-blue-900 mb-8 animate__animated animate__fadeInUp">
-                这一转变意味着什么？
-            </h3>
-
-            <div class="grid gap-6">
-                <div class="bg-white p-4 rounded-lg shadow-sm animate__animated animate__zoomIn delay-100">
-                    <h4 class="font-bold text-gray-800 mb-2">对赫哲族</h4>
-                    <p class="text-xs text-gray-500">极大地提振了民族文化自信，激励更多年轻一代加入传承行列。</p>
+        <!-- 6️⃣ 意义页：全球共鸣 -->
+        <section class="page px-8 text-center bg-gradient-to-b from-gray-900 to-black">
+            <div class="texture-fish-skin opacity-20"></div>
+            
+            <!-- NEW 3D EARTH COMPONENT -->
+            <div class="earth-container animate__animated animate__zoomIn">
+                <!-- 地球纹理层 (Rotating Texture) -->
+                <div class="earth-texture"></div>
+                <!-- 阴影遮罩层 (Shadow Overlay) -->
+                <div class="earth-shadow-overlay"></div>
+                <!-- 大气层光晕 (Atmosphere) -->
+                <div class="earth-atmosphere"></div>
+            </div>
+            
+            <h3 class="text-2xl text-gold font-serif mb-8 animate__animated animate__fadeInUp">全球共鸣</h3>
+            
+            <div class="grid gap-6 relative z-10">
+                <div class="border border-white/10 p-6 bg-white/5 backdrop-blur rounded animate__animated animate__fadeInUp delay-100">
+                    <h4 class="text-sm font-bold text-gray-300 mb-2">对中国非遗体系</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed">提供了濒危非遗抢救性保护的“中国方案”，证明了系统性保护的有效性。</p>
                 </div>
 
-                <div class="bg-white p-4 rounded-lg shadow-sm animate__animated animate__zoomIn delay-200">
-                    <h4 class="font-bold text-gray-800 mb-2">对中国非遗</h4>
-                    <p class="text-xs text-gray-500">提供了濒危非遗抢救性保护的“中国方案”与成功范本。</p>
-                </div>
-
-                <div class="bg-white p-4 rounded-lg shadow-sm animate__animated animate__zoomIn delay-300">
-                    <h4 class="font-bold text-gray-800 mb-2">对世界文化</h4>
-                    <p class="text-xs text-gray-500">丰富了人类文化的多样性，证明了即便是人口较少民族的文化也能在现代社会重焕生机。</p>
+                <div class="border border-white/10 p-6 bg-white/5 backdrop-blur rounded animate__animated animate__fadeInUp delay-200">
+                    <h4 class="text-sm font-bold text-gray-300 mb-2">对世界文化多样性</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed">每一个微小民族的记忆复苏，都是人类文明拼图中不可或缺的闪光。</p>
                 </div>
             </div>
-            <div class="scroll-indicator">
-                <i class="fas fa-chevron-down text-2xl"></i>
-            </div>
+            <div class="scroll-indicator"><i class="fas fa-angle-down"></i></div>
         </section>
 
-        <!-- 7️⃣ 互动参与页 -->
-        <section class="page bg-gray-800 text-white px-6">
-            <div class="w-full max-w-md mx-auto">
-                <h3 class="text-xl font-bold mb-2 animate__animated animate__fadeInDown">
-                    <i class="far fa-comments mr-2"></i>互动话题
-                </h3>
-                <p class="text-sm text-gray-400 mb-8 animate__animated animate__fadeIn delay-100">
-                    如果你是伊玛堪的传承人，你会优先选择哪种方式让更多年轻人了解这项非遗？
+        <!-- 7️⃣ 互动页 -->
+        <section class="page px-6" style="background: linear-gradient(180deg, var(--night-black) 0%, var(--deep-blue) 100%);">
+            <div class="w-full max-w-md mx-auto relative z-10">
+                <div class="text-center mb-10 animate__animated animate__fadeInDown">
+                    <span class="text-xs border border-gray-600 px-2 py-1 rounded text-gray-400">Interactive Lab</span>
+                    <h3 class="text-2xl font-bold mt-4 mb-2 text-white">非遗实验室</h3>
+                    <p class="text-sm text-gray-400">若你是传承人，你将如何让史诗流传？</p>
+                </div>
+                <div id="lab-options" class="space-y-4 animate__animated animate__fadeInUp delay-100">
+                    <button onclick="showFeedback('school')" class="interact-btn w-full py-4 px-6 rounded text-left flex justify-between items-center group">
+                        <span><i class="fas fa-school mr-3"></i>走进校园，编入教材</span>
+                        <i class="fas fa-arrow-right opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </button>
+                    <button onclick="showFeedback('digital')" class="interact-btn w-full py-4 px-6 rounded text-left flex justify-between items-center group">
+                        <span><i class="fas fa-vr-cardboard mr-3"></i>建立数字化博物馆</span>
+                        <i class="fas fa-arrow-right opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </button>
+                    <button onclick="showFeedback('music')" class="interact-btn w-full py-4 px-6 rounded text-left flex justify-between items-center group">
+                        <span><i class="fas fa-guitar mr-3"></i>与现代流行音乐跨界</span>
+                        <i class="fas fa-arrow-right opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </button>
+                </div>
+                <div id="lab-feedback" class="hidden text-center mt-8 border border-gold p-6 bg-black/50 backdrop-blur animate__animated animate__fadeIn">
+                    <i class="fas fa-quote-left text-gold text-2xl mb-4 opacity-50"></i>
+                    <p id="feedback-content" class="text-sm leading-relaxed text-gray-200 italic mb-4"></p>
+                    <button onclick="resetLab()" class="text-xs text-gold underline opacity-70 hover:opacity-100">重新选择</button>
+                </div>
+            </div>
+            <div class="scroll-indicator"><i class="fas fa-angle-down"></i></div>
+        </section>
+
+        <!-- 8️⃣ 结尾页 -->
+        <section class="page px-10 text-center flex flex-col items-center" style="background: linear-gradient(180deg, var(--deep-blue) 0%, #000 100%);">
+            <div class="texture-ripple opacity-50"></div>
+            <div class="relative z-10">
+                <p class="text-lg text-gray-400 mb-6 font-serif italic animate__animated animate__fadeIn">
+                    “非遗不仅是历史的陈列，<br>更是生活的延续。”
                 </p>
-
-                <!-- 互动选项容器 -->
-                <div id="interaction-area" class="space-y-4 animate__animated animate__fadeInUp delay-200">
-                    <button onclick="handleInteraction('digital')" class="option-btn w-full bg-gray-700 hover:bg-gray-600 text-left px-5 py-4 rounded-lg flex justify-between items-center group">
-                        <span>📱 制作短视频与数字化档案</span>
-                        <i class="fas fa-chevron-right opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                    </button>
-                    
-                    <button onclick="handleInteraction('school')" class="option-btn w-full bg-gray-700 hover:bg-gray-600 text-left px-5 py-4 rounded-lg flex justify-between items-center group">
-                        <span>🏫 开设校园非遗课程</span>
-                        <i class="fas fa-chevron-right opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                    </button>
-                    
-                    <button onclick="handleInteraction('tourism')" class="option-btn w-full bg-gray-700 hover:bg-gray-600 text-left px-5 py-4 rounded-lg flex justify-between items-center group">
-                        <span>🏞️ 结合民俗旅游进行展演</span>
-                        <i class="fas fa-chevron-right opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                    </button>
-                </div>
-
-                <!-- 反馈显示区域（初始隐藏） -->
-                <div id="feedback-area" class="hidden mt-6 bg-blue-900 p-4 rounded-lg border border-blue-700 animate__animated animate__fadeIn">
-                    <h4 class="font-bold text-blue-300 mb-2" id="feedback-title"></h4>
-                    <p class="text-sm text-gray-200" id="feedback-text"></p>
-                    <button onclick="resetInteraction()" class="mt-4 text-xs text-blue-300 underline">重新选择</button>
-                </div>
-            </div>
-            <div class="scroll-indicator light">
-                <i class="fas fa-chevron-down text-2xl"></i>
-            </div>
-        </section>
-
-        <!-- 8️⃣ 结尾总结页 -->
-        <section class="page bg-white px-8 flex items-center justify-center text-center">
-            <div class="max-w-md">
-                <div class="text-6xl text-gray-200 mb-4 animate__animated animate__fadeIn">“</div>
-                <h3 class="text-xl font-bold text-gray-800 leading-relaxed mb-6 animate__animated animate__fadeInUp">
-                    非遗保护不是将文化封存进博物馆，而是让它在生活中继续流淌。
+                <div class="w-16 h-[1px] bg-gold mx-auto mb-8 animate__animated animate__zoomIn delay-100"></div>
+                <h3 class="text-2xl font-bold leading-normal text-white animate__animated animate__fadeInUp delay-200">
+                    愿三江之畔的咏叹调<br>
+                    <span class="text-gold text-xl font-normal mt-2 block">永远在人类文明的长河中激荡</span>
                 </h3>
-                <p class="text-sm text-gray-600 leading-relaxed animate__animated animate__fadeInUp delay-100">
-                    伊玛堪的成功“转正”，是赫哲族文化生命力的见证，也是中华民族守护精神家园的缩影。
-                </p>
-                <div class="mt-12 w-24 h-1 bg-gray-800 mx-auto animate__animated animate__zoomIn delay-200"></div>
             </div>
-            <div class="scroll-indicator">
-                <i class="fas fa-chevron-down text-2xl"></i>
-            </div>
+            <div class="scroll-indicator"><i class="fas fa-angle-down"></i></div>
         </section>
 
         <!-- 9️⃣ 署名页 -->
-        <section class="page bg-black text-gray-400 px-6 text-center">
+        <section class="page bg-black text-center px-6">
             <div class="animate__animated animate__fadeIn">
-                <div class="mb-8">
-                    <h4 class="text-white text-lg font-bold mb-2">融合新闻课程作业</h4>
-                    <!-- [修改点 2] 修正了拼写，增加了空格 -->
-                    <p class="text-xs tracking-widest uppercase">News & Convergent Journalism</p>
+                <div class="mb-12 opacity-50">
+                    <i class="fas fa-university text-3xl mb-4"></i>
+                    <h4 class="text-xs tracking-[0.2em] uppercase">News & Convergent Journalism</h4>
+                    <p class="text-xs mt-1">融合新闻——彭东</p>
                 </div>
-
-                <div class="space-y-2 text-sm mb-12">
-                    <p>策划 / 编辑 / 制作</p>
-                    <p class="text-white font-bold text-lg">[ 梁翰林 ]</p>
-                    <p class="text-xs">24网络与新媒体 & 1班</p>
+                <div class="space-y-4 mb-16">
+                    <div class="text-sm">
+                        <span class="text-gray-600 block text-xs mb-1 uppercase tracking-wider">Producer</span>
+                        <span class="text-white font-serif text-lg">[ 梁翰林 ]</span>
+                    </div>
+                    <div class="text-sm">
+                        <span class="text-gray-600 block text-xs mb-1 uppercase tracking-wider">Role</span>
+                        <span class="text-gray-400 text-xs">24网络与新媒体1班 & 梁翰林</span>
+                    </div>
                 </div>
-
-                <div class="text-xs text-gray-600">
-                    <p>素材来源：联合国教科文组织官网、中国非物质文化遗产网</p>
-                    <!-- [修改点 3] 更新了年份 -->
-                    <p class="mt-2">Copyright © 2025 University Course Project</p>
+                <div class="text-[10px] text-gray-700 font-mono">
+                    <p>Source: UNESCO, China Intangible Cultural Heritage Network</p>
+                    <p class="mt-2">Copyright © 2025 Course Project</p>
                 </div>
-                
-                <!-- 重新观看按钮 -->
-                <button onclick="scrollToTop()" class="mt-12 border border-gray-600 text-gray-400 px-6 py-2 rounded-full text-xs hover:bg-gray-800 transition-colors">
-                    <i class="fas fa-redo mr-2"></i>重新观看
+                <button onclick="document.getElementById('h5-container').scrollTo({top:0, behavior:'smooth'})" class="mt-12 text-gold border border-gold px-6 py-2 rounded-full text-xs hover:bg-gold hover:text-black transition-colors">
+                    <i class="fas fa-redo-alt mr-2"></i>REPLAY
                 </button>
             </div>
         </section>
 
     </div>
 
-    <!-- JavaScript 逻辑 -->
+    <!-- JavaScript 交互逻辑 -->
     <script>
-        // 1. 监听滚动，触发动画
+        // 1. 滚动监听与动画触发
         document.addEventListener("DOMContentLoaded", function() {
             const pages = document.querySelectorAll('.page');
-            
-            const observerOptions = {
-                root: document.getElementById('h5-container'),
-                threshold: 0.5 
-            };
-
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
                     }
                 });
-            }, observerOptions);
+            }, { threshold: 0.4 });
 
-            pages.forEach(page => {
-                observer.observe(page);
-            });
+            pages.forEach(page => observer.observe(page));
         });
 
-        // 2. 互动页逻辑
-        const interactionData = {
-            'digital': {
-                title: '💡 数字化是传播的翅膀',
-                text: '这是非常符合当下趋势的选择！通过短视频、VR体验和数字化档案，可以让伊玛堪突破地域限制，被更多互联网原住民看到。'
+        // 2. 地图互动数据与逻辑
+        const mapData = {
+            'tongjiang': {
+                title: "同江 · 街津口",
+                desc: "赫哲族主要聚居地，建有国家级伊玛堪传习所，是多位国宝级传承人的故乡。这里是松花江注入黑龙江的交汇点。"
             },
-            'school': {
-                title: '🌱 教育是传承的根基',
-                text: '非常有远见！非遗进校园能从小培养文化认同感，让孩子们成为未来的传承者和守护者。'
+            'raohe': {
+                title: "饶河 · 四排",
+                desc: "位于乌苏里江畔，这里的伊玛堪调式苍凉深沉，保留了最原始的渔猎记忆。四排乡也是《乌苏里船歌》的创作采风地。"
             },
-            'tourism': {
-                title: '🌏 文旅融合是活态生存',
-                text: '很棒的思路！在乌苏里江畔的旅游体验中植入伊玛堪说唱，能让非遗产生经济价值，实现“以养代保”。'
+            'fuyuan': {
+                title: "抚远 · 抓吉",
+                desc: "东方第一县，日出之地。乌苏镇是赫哲族历史悠久的渔场，这里的说唱常伴随着初升的太阳和江上的开江声。"
             }
         };
 
-        function handleInteraction(type) {
-            const area = document.getElementById('interaction-area');
-            const feedback = document.getElementById('feedback-area');
-            const title = document.getElementById('feedback-title');
-            const text = document.getElementById('feedback-text');
+        function updateMapInfo(loc) {
+            const box = document.getElementById('map-info-box');
+            const hint = document.getElementById('map-hint');
+            const data = mapData[loc];
+            if(hint) hint.style.opacity = '0'; 
+            box.style.opacity = '0';
+            setTimeout(() => {
+                box.innerHTML = `
+                    <div class="text-left w-full animate__animated animate__fadeIn">
+                        <h4 class="text-gold font-bold mb-2 border-b border-white/10 pb-2 flex justify-between items-center text-sm">
+                            ${data.title} <i class="fas fa-map-pin text-xs opacity-70"></i>
+                        </h4>
+                        <p class="text-xs text-gray-300 leading-relaxed">${data.desc}</p>
+                    </div>
+                `;
+                box.style.opacity = '1';
+            }, 300);
+        }
 
-            area.style.display = 'none';
+        // 3. 实验室互动逻辑
+        const feedbackData = {
+            'school': "📚 走进校园：只有让孩子们的朗朗书声与古老史诗共鸣，文化的根脉才能在年轻一代的血液中重生。",
+            'digital': "💾 数字化博物馆：用代码构建永恒的档案，让全球的观众只需轻点屏幕，就能触碰三江平原的古老灵魂。",
+            'music': "🎵 跨界融合：当RAP遇到伊玛堪，古老的说唱将焕发出惊人的现代生命力，让传统流行起来！"
+        };
+
+        function showFeedback(type) {
+            const options = document.getElementById('lab-options');
+            const feedback = document.getElementById('lab-feedback');
+            const content = document.getElementById('feedback-content');
+
+            options.style.display = 'none';
             feedback.classList.remove('hidden');
-            
-            title.textContent = interactionData[type].title;
-            text.textContent = interactionData[type].text;
+            content.innerText = feedbackData[type];
+            feedback.classList.remove('animate__fadeIn');
+            void feedback.offsetWidth;
+            feedback.classList.add('animate__fadeIn');
         }
 
-        // [修改点 4] 优化了重置逻辑，重新触发动画
-        function resetInteraction() {
-            const area = document.getElementById('interaction-area');
-            const feedback = document.getElementById('feedback-area');
-
-            area.style.display = 'block';
-            feedback.classList.add('hidden');
-
-            // 移除再添加类名，强行重绘以重新触发动画
-            area.classList.remove('animate__fadeInUp');
-            void area.offsetWidth; // 触发重绘
-            area.classList.add('animate__fadeInUp');
-        }
-
-        // 3. 辅助功能：回到顶部
-        function scrollToTop() {
-            const container = document.getElementById('h5-container');
-            container.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+        function resetLab() {
+            document.getElementById('lab-options').style.display = 'block';
+            document.getElementById('lab-feedback').classList.add('hidden');
+            const options = document.getElementById('lab-options');
+            options.classList.remove('animate__fadeInUp');
+            void options.offsetWidth;
+            options.classList.add('animate__fadeInUp');
         }
     </script>
 </body>
